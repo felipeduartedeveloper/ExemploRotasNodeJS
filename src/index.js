@@ -1,5 +1,6 @@
 const express = require('express');
-const logRequest = require('./middleware/index')
+const logRequest = require('./middleware/index.logs')
+const validateProjectId = require('./middleware/index.auth')
 const { uuid } = require('uuidv4')
 
 const app = express();
@@ -8,7 +9,10 @@ app.use(express.json());
 
 const projects = [];
 
-app.use(logRequest)
+
+
+app.use('/projects/', logRequest );
+app.use('/projects/:id', validateProjectId, logRequest );
 
 app.get('/projects', (request, response) => {
   const { title } = request.query;

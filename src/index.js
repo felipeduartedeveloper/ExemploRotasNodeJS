@@ -1,4 +1,5 @@
 const express = require('express');
+const logRequest = require('./middleware/index')
 const { uuid } = require('uuidv4')
 
 const app = express();
@@ -6,6 +7,8 @@ app.use(express.json());
 
 
 const projects = [];
+
+app.use(logRequest)
 
 app.get('/projects', (request, response) => {
   const { title } = request.query;
@@ -27,7 +30,7 @@ app.post('/projects', (request, response) => {
   return response.json(project);
 });
 //ATUALIZAR ROTA
-app.put('/projects/:id', (request, response) => {
+app.put('/projects/:id',logRequest, (request, response) => {
   const { id } = request.params;
   const { title, owner } = request.body;
 
